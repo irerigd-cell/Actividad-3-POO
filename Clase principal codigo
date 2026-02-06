@@ -1,0 +1,73 @@
+import java.util.Scanner;
+/**
+ *
+ * @author anaja
+ */
+public class principal {
+   
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Producto p1 = new Producto();
+        Producto p2 = new Producto();
+
+        //  Crear objetos con entrada de datos y try-catch
+        System.out.println("Registro de Productos");
+        llenarDatos(p1, 1, sc);
+        llenarDatos(p2, 2, sc);
+
+        //  Mostrar valores de los atributos
+        p1.muestraProducto();
+        p2.muestraProducto();
+
+        // Invocar compararProductos y mostrar resultado
+       
+        String resultado = compararProductos(p1, p2);
+        System.out.println("Resultado de comparación: " + resultado);
+    }
+
+    // Método para llenar datos con manejo de excepciones 
+    public static void llenarDatos(Producto p, int numero, Scanner sc) {
+        try {
+            System.out.println("\nCaptura de datos Producto " + numero + ":");
+            System.out.print("Código: ");
+            p.setCodigo(sc.next());
+            sc.nextLine(); // Limpiar buffer
+
+            System.out.print("Descripción: ");
+            p.setDescripcion(sc.nextLine());
+
+            System.out.print("Tipo: ");
+            p.setTipo(sc.nextLine());
+
+            System.out.print("Costo (ej. 100.0): ");
+            p.setCosto(Double.parseDouble(sc.nextLine()));
+
+            System.out.print("Impuesto (ej. 16.0): ");
+            p.setImpuesto(Double.parseDouble(sc.nextLine()));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El costo e impuesto deben ser números decimales.");
+            System.exit(0); // Detener programa si el dato es incorrecto
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+        }
+    }
+
+    // Método estático compararProductos
+    public static String compararProductos(Producto prod1, Producto prod2) {
+        // Usamos una utilidad del 20% para el ejemplo 
+        double utilidadEjemplo = 20.0;
+        double precio1 = prod1.calcularPrecio(utilidadEjemplo);
+        double precio2 = prod2.calcularPrecio(utilidadEjemplo);
+
+        if (precio1 > precio2) {
+            return "El producto con mayor precio es: " + prod1.getDescripcion() + " ($" + String.format("%.2f", precio1) + ")";
+        } else if (precio2 > precio1) {
+            return "El producto con mayor precio es: " + prod2.getDescripcion() + " ($" + String.format("%.2f", precio2) + ")";
+        } else {
+            return "Ambos productos tienen el mismo precio de venta.";
+        }
+    }
+}
+
